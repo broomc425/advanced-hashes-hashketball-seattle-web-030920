@@ -151,7 +151,21 @@ def player_numbers(team_name)
 end
 
 def player_stats(sought_player_name)
-  
+  new_hash = {}
+  game_hash.collect do |place, team|
+    team.each do |attribute, _data|
+      next unless attribute == :players
+
+      game_hash[place][attribute].each do |player|
+        next unless player[:player_name] == sought_player_name
+
+        new_hash = player.delete_if do |k, _v|
+          k == :player_name
+        end
+      end
+    end
+  end
+  new_hash
 end
 
 def big_shoe_rebounds
